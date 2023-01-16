@@ -7,7 +7,7 @@ import plotly.express as px
 import pandas as pd
 import nltk
 from nltk.tokenize import sent_tokenize
-# nltk.download('punkt')
+nltk.download('punkt')
 
 def prep_text(text):
     """
