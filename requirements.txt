@@ -4,4 +4,4 @@ plotly
 pandas
 nltk
 streamlit
-re
+regex
