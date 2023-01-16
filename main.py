@@ -1,6 +1,5 @@
 import streamlit as st
 import re
-# import inflect
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import string
@@ -8,14 +7,12 @@ import plotly.express as px
 import pandas as pd
 import nltk
 from nltk.tokenize import sent_tokenize
-nltk.download('punkt')
-
-# Note - USE "VBA_venv" environment in the local github folder
-
-punctuations = string.punctuation
+# nltk.download('punkt')
 
 def prep_text(text):
-    # function for preprocessing text
+    """
+    function for preprocessing text
+    """
 
     # remove trailing characters (\s\n) and convert to lowercase
     clean_sents = [] # append clean con sentences
@@ -34,16 +31,19 @@ def prep_text(text):
 checkpoint = "sadickam/sdg-classification-bert"
 
 
+# Load and cache model
 @st.cache(allow_output_mutation=True)
 def load_model():
     return AutoModelForSequenceClassification.from_pretrained(checkpoint)
 
 
+# Load and cache tokenizer
 @st.cache(allow_output_mutation=True)
 def load_tokenizer():
     return AutoTokenizer.from_pretrained(checkpoint)
 
 
+# Configure app page
 st.set_page_config(
     page_title="SDG Classifier", layout= "wide", initial_sidebar_state="auto", page_icon="🚦"
 )
@@ -62,6 +62,7 @@ with st.expander("About this app", expanded=False):
     )
 
 
+# Form to recieve input text 
 st.markdown("##### Text Input")
 with st.form(key="my_form"):
     Text_entry = st.text_area(
@@ -71,7 +72,7 @@ with st.form(key="my_form"):
 
 if submitted:
 
-    # First prediction
+    # SDG labels list
 
     label_list = [
         'GOAL 1: No Poverty',
@@ -91,14 +92,15 @@ if submitted:
         'GOAL 15: Life on Land',
         'GOAL 16: Peace, Justice and Strong Institutions'
     ]
-
+    
+    # Pre-process text
     joined_clean_sents = prep_text(Text_entry)
 
-    # tokenize
+    # tokenize pre-processed text
     tokenizer = load_tokenizer()
     tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
-    # predict
+    # predict pre-processed
     model = load_model()
     text_logits = model(**tokenized_text).logits
     predictions = torch.softmax(text_logits, dim=1).tolist()[0]
