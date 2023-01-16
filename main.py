@@ -1,5 +1,5 @@
 import streamlit as st
-import re
+import regex as re
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import string
