@@ -104,35 +104,38 @@ with a1:
         # Pre-process text
         my_bar = st.progress(0)
 
-        for count, text_input in enumerate(text_list):
+        for percent_complete in range(len(text_list)):
             time.sleep(0.1)
 
-            joined_clean_sents = prep_text(text_input)
+            for text_input in (text_list):
+                time.sleep(0.1)
 
-            # tokenize pre-processed text
-            tokenizer = load_tokenizer()
-            tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
+                joined_clean_sents = prep_text(text_input)
 
-            # predict pre-processed
-            model = load_model()
-            text_logits = model(**tokenized_text).logits
-            predictions = torch.softmax(text_logits, dim=1).tolist()[0]
-            predictions = [round(a, 3) for a in predictions]
+                # tokenize pre-processed text
+                tokenizer = load_tokenizer()
+                tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
-            # dictionary with label as key and percentage as value
-            pred_dict = (dict(zip(label_list, predictions)))
+                # predict pre-processed
+                model = load_model()
+                text_logits = model(**tokenized_text).logits
+                predictions = torch.softmax(text_logits, dim=1).tolist()[0]
+                predictions = [round(a, 3) for a in predictions]
 
-            # sort 'pred_dict' by value and index the highest at [0]
-            sorted_preds = sorted(pred_dict.items(), key=lambda x: x[1], reverse=True)
+                # dictionary with label as key and percentage as value
+                pred_dict = (dict(zip(label_list, predictions)))
 
-            # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
-            u, v = zip(*sorted_preds)
-            x = list(u)
-            predicted_labels.append(x[0])
-            y = list(v)
-            prediction_score.append(y[0])
+                # sort 'pred_dict' by value and index the highest at [0]
+                sorted_preds = sorted(pred_dict.items(), key=lambda x: x[1], reverse=True)
 
-            my_bar.progress(count + 1)
+                # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
+                u, v = zip(*sorted_preds)
+                x = list(u)
+                predicted_labels.append(x[0])
+                y = list(v)
+                prediction_score.append(y[0])
+
+            my_bar.progress(percent_complete + 1)
 
         #df_csv = pd.DataFrame()
 
