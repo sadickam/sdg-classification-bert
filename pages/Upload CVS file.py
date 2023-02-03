@@ -1,5 +1,4 @@
 import base64
-import openpyxl
 import streamlit as st
 import regex as re
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
