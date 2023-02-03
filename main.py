@@ -154,4 +154,5 @@ if submitted:
     with c3:
         st.header("")
         predicted = st.markdown("###### Predicted " + str(sorted_preds[0][0]))
-        Prediction_confidence = st.metric("Prediction confidence", (str(round(sorted_preds[0][1]*100, 1))+"%"))
+        Prediction_confidence = st.metric("Prediction confidence", (str(round(sorted_preds[0][1] * 100, 1)) + "%"))
+
