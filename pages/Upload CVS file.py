@@ -108,7 +108,6 @@ with a1:
             time.sleep(0.1)
 
             for text_input in (text_list):
-                time.sleep(0.1)
 
                 joined_clean_sents = prep_text(text_input)
 
