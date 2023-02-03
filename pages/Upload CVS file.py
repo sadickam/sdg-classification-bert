@@ -7,6 +7,7 @@ import plotly.express as px
 import pandas as pd
 import nltk
 import time
+from stqdm import stqdm
 from nltk.tokenize import sent_tokenize
 nltk.download('punkt')
 
@@ -103,38 +104,36 @@ with a1:
         ]
 
         # Pre-process text
-        with st.spinner(text="In progress"):
+        for text_input in stqdm(text_list):
             time.sleep(0.02)
+            joined_clean_sents = prep_text(text_input)
 
-            for text_input in text_list:
-                joined_clean_sents = prep_text(text_input)
+            # tokenize pre-processed text
+            tokenizer = load_tokenizer()
+            tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
-                # tokenize pre-processed text
-                tokenizer = load_tokenizer()
-                tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
+            # predict pre-processed
+            model = load_model()
+            text_logits = model(**tokenized_text).logits
+            predictions = torch.softmax(text_logits, dim=1).tolist()[0]
+            predictions = [round(a, 3) for a in predictions]
 
-                # predict pre-processed
-                model = load_model()
-                text_logits = model(**tokenized_text).logits
-                predictions = torch.softmax(text_logits, dim=1).tolist()[0]
-                predictions = [round(a, 3) for a in predictions]
+            # dictionary with label as key and percentage as value
+            pred_dict = (dict(zip(label_list, predictions)))
 
-                # dictionary with label as key and percentage as value
-                pred_dict = (dict(zip(label_list, predictions)))
+            # sort 'pred_dict' by value and index the highest at [0]
+            sorted_preds = sorted(pred_dict.items(), key=lambda g: g[1], reverse=True)
 
-                # sort 'pred_dict' by value and index the highest at [0]
-                sorted_preds = sorted(pred_dict.items(), key=lambda g: g[1], reverse=True)
+            # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
+            u, v = zip(*sorted_preds)
+            x = list(u)
+            predicted_labels.append(x[0])
+            y = list(v)
+            prediction_score.append(y[0])
 
-                # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
-                u, v = zip(*sorted_preds)
-                x = list(u)
-                predicted_labels.append(x[0])
-                y = list(v)
-                prediction_score.append(y[0])
-
-            # append label and score to df_csv
-            df_csv['SDG_predicted'] = predicted_labels
-            df_csv['prediction_score'] = prediction_score
+        # append label and score to df_csv
+        df_csv['SDG_predicted'] = predicted_labels
+        df_csv['prediction_score'] = prediction_score
 
         c1, c2, c3 = st.columns([1.5, 0.5, 1])
 
