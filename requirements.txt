@@ -7,4 +7,4 @@ streamlit
 regex
 stqdm
 base64
-st_pages
+st-pages
