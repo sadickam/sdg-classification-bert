@@ -1,3 +1,5 @@
+import base64
+import openpyxl
 import streamlit as st
 import regex as re
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -34,9 +36,9 @@ checkpoint = "sadickam/sdg-classification-bert"
 
 
 # encode df to CSV for downloading
-@st.cache
-def convert_df(df):
-    return df.to_csv().encode('utf-8')
+# @st.cache
+# def convert_df(df):
+#     return df.to_csv().encode('utf-8')
 
 
 # Load and cache model
@@ -59,48 +61,46 @@ st.set_page_config(
 st.header("🚦 Sustainable Development Goals (SDG) Text Classifier")
 st.markdown("")
 
-a1, a2, a3 = st.columns([1.5, 0.5, 1])
+# upload button recieve input text
+st.markdown("##### Column to be analysed must be titled 'text_inputs'")
+uploaded_file = st.file_uploader("Upload your CSV file", type=["csv", "excel"])
 
-with a3:
-    st.markdown("##### Before uploading CVS")
-    st.markdown("- Column to be analysed must be titled **'text_inputs'**")
-    st.markdown("- DO NOT OPEN 'main' page when csv file is processing")
+# lists for appending predictions
+predicted_labels = []
+prediction_score = []
 
-with a1:
-    # Form to recieve input text
-    st.markdown("##### Upload CVS file to get predictions and scores")
-    uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"],
-                                     help="Drag and drop or browse to find CSV file from your local directory")
+if uploaded_file is not None:
 
-    # lists for appending predictions
-    predicted_labels = []
-    prediction_score = []
+    file_name = uploaded_file.name
 
-    if uploaded_file is not None:
+    # read csv file
+    if file_name.endswith('csv'):
+        df_docs = pd.read_csv(uploaded_file)
+        text_list = df_docs["text_inputs"].tolist()
 
-        df_csv = pd.read_csv(uploaded_file)
-        text_list = df_csv["text_inputs"].tolist()
-
+    # or read excel file
+    elif file_name.endswith('xlsx'):
+        df_docs = pd.read_excel(uploaded_file, engine="openpyxl")
+        text_list = df_docs["text_inputs"].tolist()
 
         # SDG labels list
-
         label_list = [
-            'GOAL 1: No Poverty',
-            'GOAL 2: Zero Hunger',
-            'GOAL 3: Good Health and Well-being',
-            'GOAL 4: Quality Education',
-            'GOAL 5: Gender Equality',
-            'GOAL 6: Clean Water and Sanitation',
-            'GOAL 7: Affordable and Clean Energy',
-            'GOAL 8: Decent Work and Economic Growth',
-            'GOAL 9: Industry, Innovation and Infrastructure',
-            'GOAL 10: Reduced Inequality',
-            'GOAL 11: Sustainable Cities and Communities',
-            'GOAL 12: Responsible Consumption and Production',
-            'GOAL 13: Climate Action',
-            'GOAL 14: Life Below Water',
-            'GOAL 15: Life on Land',
-            'GOAL 16: Peace, Justice and Strong Institutions'
+            'GOAL_1_No Poverty',
+            'GOAL_2_Zero Hunger',
+            'GOAL_3_Good Health and Well-being',
+            'GOAL_4_Quality Education',
+            'GOAL_5_Gender Equality',
+            'GOAL_6_Clean Water and Sanitation',
+            'GOAL_7_Affordable and Clean Energy',
+            'GOAL_8_Decent Work and Economic Growth',
+            'GOAL_9_Industry, Innovation and Infrastructure',
+            'GOAL_10_Reduced Inequality',
+            'GOAL_11_Sustainable Cities and Communities',
+            'GOAL_12_Responsible Consumption and Production',
+            'GOAL_13_Climate Action',
+            'GOAL_14_Life Below Water',
+            'GOAL_15_Life on Land',
+            'GOAL_16_Peace, Justice and Strong Institutions'
         ]
 
         # Pre-process text
@@ -132,15 +132,17 @@ with a1:
             prediction_score.append(y[0])
 
         # append label and score to df_csv
-        df_csv['SDG_predicted'] = predicted_labels
-        df_csv['prediction_score'] = prediction_score
+        df_docs['SDG_predicted'] = predicted_labels
+        df_docs['prediction_score'] = prediction_score
 
-        c1, c2, c3 = st.columns([1.5, 0.5, 1])
+        st.empty()
 
-        with c1:
+        tab1, tab2 = st.tabs(["💹 SDG Histogram", "⏬ Download CVS with predictions"])
+
+        with tab1:
             st.markdown("##### Prediction outcome")
             # plot graph of predictions
-            fig = px.histogram(df_csv, x="predicted_labels", orientation="h")
+            fig = px.histogram(df_docs, y="SDG_predicted")
 
             fig.update_layout(
                 # barmode='stack',
@@ -153,8 +155,8 @@ with a1:
                 autosize=False,
                 width=800,
                 height=500,
-                xaxis_title="Sustainable development goals (SDG)",
-                yaxis_title="SDG counts",
+                xaxis_title="SDG counts",
+                yaxis_title="Sustainable development goals (SDG",
                 # legend_title="Topics"
             )
 
@@ -167,15 +169,18 @@ with a1:
 
             st.success("SDGs successfully predicted. ", icon="✅")
 
-        with c3:
+        with tab2:
             st.header("")
-            csv = convert_df(df_csv)
+            csv = df_docs.to_csv(index=False)
+            b64 = base64.b64encode(csv.encode()).decode()
+            href = f'<a href="data:file/csv;base64, {b64}" download="sdg_predictions.csv">Download CSV with predicted SDGs and scores </a>'
+            st.markdown(href, unsafe_allow_html=True)
 
-            st.download_button(
-                label="Download CSV file with predictions",
-                data=csv,
-                file_name='large_df.csv',
-                mime='text/csv',
-            )
+            # st.download_button(
+            #     label="Download CSV file with predictions",
+            #     data=csv,
+            #     file_name='large_df.csv',
+            #     mime='text/csv',
+            # )
 
 
