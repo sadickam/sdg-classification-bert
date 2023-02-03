@@ -48,8 +48,7 @@ st.set_page_config(
     page_title="SDG Classifier", layout= "wide", initial_sidebar_state="auto", page_icon="🚦"
 )
 
-st.title("🚦 Sustainable Development Goals (SDG) Text Classifier")
-# st.header("")
+st.header("🚦 Sustainable Development Goals (SDG) Text Classifier")
 
 with st.expander("About this app", expanded=False):
     st.write(
@@ -62,7 +61,8 @@ with st.expander("About this app", expanded=False):
     )
 
 
-# Form to recieve input text 
+
+# Form to recieve input text
 st.markdown("##### Text Input")
 with st.form(key="my_form"):
     Text_entry = st.text_area(
@@ -92,7 +92,7 @@ if submitted:
         'GOAL 15: Life on Land',
         'GOAL 16: Peace, Justice and Strong Institutions'
     ]
-    
+
     # Pre-process text
     joined_clean_sents = prep_text(Text_entry)
 
