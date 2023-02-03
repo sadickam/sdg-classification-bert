@@ -149,10 +149,9 @@ if submitted:
 
         # Plot
         st.plotly_chart(fig, use_container_width=False)
+        st.success("SDG successfully predicted. ", icon="✅")
 
     with c3:
         st.header("")
         predicted = st.markdown("###### Predicted " + str(sorted_preds[0][0]))
         Prediction_confidence = st.metric("Prediction confidence", (str(round(sorted_preds[0][1]*100, 1))+"%"))
-
-        st.success("SDG successfully predicted. ", icon="✅")

@@ -169,6 +169,8 @@ with a1:
             # Plot
             st.plotly_chart(fig, use_container_width=False)
 
+            st.success("SDGs successfully predicted. ", icon="✅")
+
         with c3:
             st.header("")
             csv = convert_df(df_csv)
@@ -180,5 +182,4 @@ with a1:
                 mime='text/csv',
             )
 
-            st.success("SDGs successfully predicted. ", icon="✅")
 
