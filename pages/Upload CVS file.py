@@ -63,7 +63,7 @@ st.markdown("")
 
 # upload button recieve input text
 st.markdown("##### Column to be analysed must be titled 'text_inputs'")
-uploaded_file = st.file_uploader("Upload your CSV file", type=["csv", "excel"])
+uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
 
 # lists for appending predictions
 predicted_labels = []
@@ -71,116 +71,108 @@ prediction_score = []
 
 if uploaded_file is not None:
 
-    file_name = uploaded_file.name
-
     # read csv file
-    if file_name.endswith('csv'):
-        df_docs = pd.read_csv(uploaded_file)
-        text_list = df_docs["text_inputs"].tolist()
+    df_docs = pd.read_csv(uploaded_file)
+    text_list = df_docs["text_inputs"].tolist()
 
-    # or read excel file
-    elif file_name.endswith('xlsx'):
-        df_docs = pd.read_excel(uploaded_file, engine="openpyxl")
-        text_list = df_docs["text_inputs"].tolist()
+    # SDG labels list
+    label_list = [
+        'GOAL_1_No Poverty',
+        'GOAL_2_Zero Hunger',
+        'GOAL_3_Good Health and Well-being',
+        'GOAL_4_Quality Education',
+        'GOAL_5_Gender Equality',
+        'GOAL_6_Clean Water and Sanitation',
+        'GOAL_7_Affordable and Clean Energy',
+        'GOAL_8_Decent Work and Economic Growth',
+        'GOAL_9_Industry, Innovation and Infrastructure',
+        'GOAL_10_Reduced Inequality',
+        'GOAL_11_Sustainable Cities and Communities',
+        'GOAL_12_Responsible Consumption and Production',
+        'GOAL_13_Climate Action',
+        'GOAL_14_Life Below Water',
+        'GOAL_15_Life on Land',
+        'GOAL_16_Peace, Justice and Strong Institutions'
+    ]
 
-        # SDG labels list
-        label_list = [
-            'GOAL_1_No Poverty',
-            'GOAL_2_Zero Hunger',
-            'GOAL_3_Good Health and Well-being',
-            'GOAL_4_Quality Education',
-            'GOAL_5_Gender Equality',
-            'GOAL_6_Clean Water and Sanitation',
-            'GOAL_7_Affordable and Clean Energy',
-            'GOAL_8_Decent Work and Economic Growth',
-            'GOAL_9_Industry, Innovation and Infrastructure',
-            'GOAL_10_Reduced Inequality',
-            'GOAL_11_Sustainable Cities and Communities',
-            'GOAL_12_Responsible Consumption and Production',
-            'GOAL_13_Climate Action',
-            'GOAL_14_Life Below Water',
-            'GOAL_15_Life on Land',
-            'GOAL_16_Peace, Justice and Strong Institutions'
-        ]
+    # Pre-process text
+    for text_input in stqdm(text_list):
+        time.sleep(0.02)
+        joined_clean_sents = prep_text(text_input)
 
-        # Pre-process text
-        for text_input in stqdm(text_list):
-            time.sleep(0.02)
-            joined_clean_sents = prep_text(text_input)
+        # tokenize pre-processed text
+        tokenizer = load_tokenizer()
+        tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
-            # tokenize pre-processed text
-            tokenizer = load_tokenizer()
-            tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
+        # predict pre-processed
+        model = load_model()
+        text_logits = model(**tokenized_text).logits
+        predictions = torch.softmax(text_logits, dim=1).tolist()[0]
+        predictions = [round(a, 3) for a in predictions]
 
-            # predict pre-processed
-            model = load_model()
-            text_logits = model(**tokenized_text).logits
-            predictions = torch.softmax(text_logits, dim=1).tolist()[0]
-            predictions = [round(a, 3) for a in predictions]
+        # dictionary with label as key and percentage as value
+        pred_dict = (dict(zip(label_list, predictions)))
 
-            # dictionary with label as key and percentage as value
-            pred_dict = (dict(zip(label_list, predictions)))
+        # sort 'pred_dict' by value and index the highest at [0]
+        sorted_preds = sorted(pred_dict.items(), key=lambda g: g[1], reverse=True)
 
-            # sort 'pred_dict' by value and index the highest at [0]
-            sorted_preds = sorted(pred_dict.items(), key=lambda g: g[1], reverse=True)
+        # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
+        u, v = zip(*sorted_preds)
+        x = list(u)
+        predicted_labels.append(x[0])
+        y = list(v)
+        prediction_score.append(y[0])
 
-            # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
-            u, v = zip(*sorted_preds)
-            x = list(u)
-            predicted_labels.append(x[0])
-            y = list(v)
-            prediction_score.append(y[0])
+    # append label and score to df_csv
+    df_docs['SDG_predicted'] = predicted_labels
+    df_docs['prediction_score'] = prediction_score
 
-        # append label and score to df_csv
-        df_docs['SDG_predicted'] = predicted_labels
-        df_docs['prediction_score'] = prediction_score
+    st.empty()
 
-        st.empty()
+    tab1, tab2 = st.tabs(["💹 SDG Histogram", "⏬ Download CVS with predictions"])
 
-        tab1, tab2 = st.tabs(["💹 SDG Histogram", "⏬ Download CVS with predictions"])
+    with tab1:
+        st.markdown("##### Prediction outcome")
+        # plot graph of predictions
+        fig = px.histogram(df_docs, y="SDG_predicted")
 
-        with tab1:
-            st.markdown("##### Prediction outcome")
-            # plot graph of predictions
-            fig = px.histogram(df_docs, y="SDG_predicted")
+        fig.update_layout(
+            # barmode='stack',
+            template='seaborn',
+            font=dict(
+                family="Arial",
+                size=14,
+                color="black"
+            ),
+            autosize=False,
+            width=800,
+            height=500,
+            xaxis_title="SDG counts",
+            yaxis_title="Sustainable development goals (SDG",
+            # legend_title="Topics"
+        )
 
-            fig.update_layout(
-                # barmode='stack',
-                template='seaborn',
-                font=dict(
-                    family="Arial",
-                    size=14,
-                    color="black"
-                ),
-                autosize=False,
-                width=800,
-                height=500,
-                xaxis_title="SDG counts",
-                yaxis_title="Sustainable development goals (SDG",
-                # legend_title="Topics"
-            )
+        fig.update_xaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
+        fig.update_yaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
+        fig.update_annotations(font_size=14)  # this changes y_axis, x_axis and subplot title font sizes
 
-            fig.update_xaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
-            fig.update_yaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
-            fig.update_annotations(font_size=14)  # this changes y_axis, x_axis and subplot title font sizes
+        # Plot
+        st.plotly_chart(fig, use_container_width=False)
 
-            # Plot
-            st.plotly_chart(fig, use_container_width=False)
+        st.success("SDGs successfully predicted. ", icon="✅")
 
-            st.success("SDGs successfully predicted. ", icon="✅")
+    with tab2:
+        st.header("")
+        csv = df_docs.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()
+        href = f'<a href="data:file/csv;base64, {b64}" download="sdg_predictions.csv">Download CSV with predicted SDGs and scores </a>'
+        st.markdown(href, unsafe_allow_html=True)
 
-        with tab2:
-            st.header("")
-            csv = df_docs.to_csv(index=False)
-            b64 = base64.b64encode(csv.encode()).decode()
-            href = f'<a href="data:file/csv;base64, {b64}" download="sdg_predictions.csv">Download CSV with predicted SDGs and scores </a>'
-            st.markdown(href, unsafe_allow_html=True)
-
-            # st.download_button(
-            #     label="Download CSV file with predictions",
-            #     data=csv,
-            #     file_name='large_df.csv',
-            #     mime='text/csv',
-            # )
+        # st.download_button(
+        #     label="Download CSV file with predictions",
+        #     data=csv,
+        #     file_name='large_df.csv',
+        #     mime='text/csv',
+        # )
 
 
