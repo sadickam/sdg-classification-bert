@@ -102,8 +102,9 @@ with a1:
         ]
 
         # Pre-process text
+        my_bar = st.progress(0)
 
-        for text_input in text_list:
+        for count, text_input in enumerate(text_list):
             time.sleep(0.1)
 
             joined_clean_sents = prep_text(text_input)
@@ -130,6 +131,8 @@ with a1:
             predicted_labels.append(x[0])
             y = list(v)
             prediction_score.append(y[0])
+
+            my_bar.progress(count + 1)
 
         #df_csv = pd.DataFrame()
 
