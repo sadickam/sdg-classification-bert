@@ -103,11 +103,10 @@ with a1:
         ]
 
         # Pre-process text
-        with st.spinner(text= "In progress"):
+        with st.spinner(text="In progress"):
+            time.sleep(0.02)
 
             for text_input in text_list:
-                time.sleep(0.01)
-
                 joined_clean_sents = prep_text(text_input)
 
                 # tokenize pre-processed text
@@ -124,7 +123,7 @@ with a1:
                 pred_dict = (dict(zip(label_list, predictions)))
 
                 # sort 'pred_dict' by value and index the highest at [0]
-                sorted_preds = sorted(pred_dict.items(), key=lambda x: x[1], reverse=True)
+                sorted_preds = sorted(pred_dict.items(), key=lambda g: g[1], reverse=True)
 
                 # Zip explode sorted_preds and append label with highets probability at index 0 to predicted_labels list
                 u, v = zip(*sorted_preds)
@@ -132,9 +131,6 @@ with a1:
                 predicted_labels.append(x[0])
                 y = list(v)
                 prediction_score.append(y[0])
-
-
-        #df_csv = pd.DataFrame()
 
             # append label and score to df_csv
             df_csv['SDG_predicted'] = predicted_labels
