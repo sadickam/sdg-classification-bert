@@ -7,7 +7,7 @@ import plotly.express as px
 import pandas as pd
 import nltk
 import time
-from tqdm import tqdm
+from stqdm import stqdm
 from nltk.tokenize import sent_tokenize
 nltk.download('punkt')
 
@@ -104,7 +104,8 @@ with a1:
 
         # Pre-process text
 
-        for text_input in tqdm(text_list):
+        for text_input in stqdm(text_list):
+            time.sleep(0.02)
 
             joined_clean_sents = prep_text(text_input)
 
