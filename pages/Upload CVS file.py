@@ -105,7 +105,7 @@ with a1:
         # Pre-process text
 
         for text_input in stqdm(text_list):
-            time.sleep(0.02)
+            time.sleep(0.01)
 
             joined_clean_sents = prep_text(text_input)
 
