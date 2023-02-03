@@ -1,4 +1,5 @@
 import streamlit as st
+from st_pages import Page, add_page_title, show_pages
 import regex as re
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
@@ -48,6 +49,13 @@ st.set_page_config(
     page_title="SDG Classifier", layout= "wide", initial_sidebar_state="auto", page_icon="🚦"
 )
 
+"## Declaring pages in app and assigning names"
+show_pages(
+    [
+        Page("sgd-classification-bert/main.py", "Home"),
+        Page("sgd-classification-bert/Upload CSV file.py", "Upload CSV file")
+    ])
+
 st.header("🚦 Sustainable Development Goals (SDG) Text Classifier")
 
 with st.expander("About this app", expanded=False):
@@ -59,8 +67,6 @@ with st.expander("About this app", expanded=False):
         - The model powering this app was developed using the OSDG Community Dataset (OSDG-CD) [Link - https://zenodo.org/record/5550238#.Y8Sd5f5ByF5]
         """
     )
-
-
 
 # Form to recieve input text
 st.markdown("##### Text Input")
