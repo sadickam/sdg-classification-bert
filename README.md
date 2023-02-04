@@ -34,7 +34,7 @@ GIT_LFS_SKIP_SMUDGE=1
 ```
 
 ### OSDG online tool
-The OSDG has online tool for SDG clsssification of text. I will encourage you to check it out at https://www.osdg.ai/ or visit their github page at https://github.com/osdg-ai/osdg-data to learm more about their tool.
+The OSDG has an online tool for SDG clsssification of text. I will encourage you to check it out at https://www.osdg.ai/ or visit their github page at https://github.com/osdg-ai/osdg-data to learm more about their tool.
 
 ### To do
 - Add model evaluation metrics
