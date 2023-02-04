@@ -6,4 +6,4 @@ nltk
 streamlit
 regex
 stqdm
-base64
+pybase64
