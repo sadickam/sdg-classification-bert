@@ -91,66 +91,73 @@ if submitted:
         'GOAL 16: Peace, Justice and Strong Institutions'
     ]
 
-    # Pre-process text
-    joined_clean_sents = prep_text(Text_entry)
-
-    # tokenize pre-processed text
-    tokenizer = load_tokenizer()
-    tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
-
-    # predict pre-processed
-    model = load_model()
-    text_logits = model(**tokenized_text).logits
-    predictions = torch.softmax(text_logits, dim=1).tolist()[0]
-    predictions = [round(a, 3) for a in predictions]
-
-    # dictionary with label as key and percentage as value
-    pred_dict = (dict(zip(label_list, predictions)))
-
-    # sort 'pred_dict' by value and index the highest at [0]
-    sorted_preds = sorted(pred_dict.items(), key=lambda x: x[1], reverse=True)
-
-    # Make dataframe for plotly bar chart
-    u, v = zip(*sorted_preds)
-    x = list(u)
-    y = list(v)
-    df2 = pd.DataFrame()
-    df2['SDG'] = x
-    df2['Likelihood'] = y
-
-    c1, c2, c3 = st.columns([1.5, 0.5, 1])
-
-    with c1:
-        st.markdown("##### Prediction outcome")
-        # plot graph of predictions
-        fig = px.bar(df2, x="Likelihood", y="SDG", orientation="h")
-
-        fig.update_layout(
-            # barmode='stack',
-            template='seaborn',
-            font=dict(
-                family="Arial",
-                size=14,
-                color="black"
-            ),
-            autosize=False,
-            width=800,
-            height=500,
-            xaxis_title="Likelihood of SDG",
-            yaxis_title="Sustainable development goals (SDG)",
-            # legend_title="Topics"
+    if Text_entry is None:
+        st.warning(
+            'Please type or copy and paste text into the above "Text Input" box', icon="⚠️"
         )
 
-        fig.update_xaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
-        fig.update_yaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
-        fig.update_annotations(font_size=14)  # this changes y_axis, x_axis and subplot title font sizes
+    elif Text_entry is not None:
 
-        # Plot
-        st.plotly_chart(fig, use_container_width=False)
-        st.success("SDG successfully predicted. ", icon="✅")
+        # Pre-process text
+        joined_clean_sents = prep_text(Text_entry)
 
-    with c3:
-        st.header("")
-        predicted = st.markdown("###### Predicted " + str(sorted_preds[0][0]))
-        Prediction_confidence = st.metric("Prediction confidence", (str(round(sorted_preds[0][1] * 100, 1)) + "%"))
+        # tokenize pre-processed text
+        tokenizer = load_tokenizer()
+        tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
+
+        # predict pre-processed
+        model = load_model()
+        text_logits = model(**tokenized_text).logits
+        predictions = torch.softmax(text_logits, dim=1).tolist()[0]
+        predictions = [round(a, 3) for a in predictions]
+
+        # dictionary with label as key and percentage as value
+        pred_dict = (dict(zip(label_list, predictions)))
+
+        # sort 'pred_dict' by value and index the highest at [0]
+        sorted_preds = sorted(pred_dict.items(), key=lambda x: x[1], reverse=True)
+
+        # Make dataframe for plotly bar chart
+        u, v = zip(*sorted_preds)
+        x = list(u)
+        y = list(v)
+        df2 = pd.DataFrame()
+        df2['SDG'] = x
+        df2['Likelihood'] = y
+
+        c1, c2, c3 = st.columns([1.5, 0.5, 1])
+
+        with c1:
+            st.markdown("##### Prediction outcome")
+            # plot graph of predictions
+            fig = px.bar(df2, x="Likelihood", y="SDG", orientation="h")
+
+            fig.update_layout(
+                # barmode='stack',
+                template='seaborn',
+                font=dict(
+                    family="Arial",
+                    size=14,
+                    color="black"
+                ),
+                autosize=False,
+                width=800,
+                height=500,
+                xaxis_title="Likelihood of SDG",
+                yaxis_title="Sustainable development goals (SDG)",
+                # legend_title="Topics"
+            )
+
+            fig.update_xaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
+            fig.update_yaxes(tickangle=0, tickfont=dict(family='Arial', color='black', size=14))
+            fig.update_annotations(font_size=14)  # this changes y_axis, x_axis and subplot title font sizes
+
+            # Plot
+            st.plotly_chart(fig, use_container_width=False)
+            st.success("SDG successfully predicted. ", icon="✅")
+
+        with c3:
+            st.header("")
+            predicted = st.markdown("###### Predicted " + str(sorted_preds[0][0]))
+            Prediction_confidence = st.metric("Prediction confidence", (str(round(sorted_preds[0][1] * 100, 1)) + "%"))
 
