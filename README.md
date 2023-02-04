@@ -1,5 +1,5 @@
 # sdg-classification-bert (Streamlit App)
-This repository poweres a Streamlit app for classifying text with respect the United Nations Sustainable Development Goals (SDG). The classification model is a fine-tuned BERT. The labelled data used in fine-tuning the BERT model was obtained fron the OSDG Community Dataset publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset include text from diverse fields; hence, the fine tuned BERT model and the streamlit app are generic and can be used to predict the SDG of most texts.  
+This repository powers a Streamlit app for classifying text with respect the United Nations Sustainable Development Goals (SDG). The classification model is a fine-tuned BERT. The labelled data used in fine-tuning the BERT model was obtained fron the OSDG Community Dataset publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset include text from diverse fields; hence, the fine tuned BERT model and the streamlit app are generic and can be used to predict the SDG of most texts.  
 
 The streamlit app supports **SDG 1 to SDG 16** shown in the image below
 ![image](https://user-images.githubusercontent.com/73560591/216751462-ced482ba-5d8e-48aa-9a48-5557979a35f1.png)
