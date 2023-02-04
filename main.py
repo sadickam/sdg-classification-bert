@@ -91,12 +91,12 @@ if submitted:
         'GOAL 16: Peace, Justice and Strong Institutions'
     ]
 
-    if Text_entry is None:
+    if Text_entry == "":
         st.warning(
             'Please type or copy and paste text into the above "Text Input" box', icon="⚠️"
         )
 
-    elif Text_entry is not None:
+    elif Text_entry != "":
 
         # Pre-process text
         joined_clean_sents = prep_text(Text_entry)
