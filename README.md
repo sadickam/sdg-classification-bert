@@ -6,7 +6,7 @@ This streamlit app supports **SDG 1 to SDG 16** shown in the image below
 Source:https://www.un.org/development/desa/disabilities/about-us/sustainable-development-goals-sdgs-and-disability.html
 
 ### Streamlit app link and key functions
-You cab access the streamlit app at: https://sadickam-sdg-classification-bert-main-pypeui.streamlit.app/
+You can access the streamlit app at: https://sadickam-sdg-classification-bert-main-pypeui.streamlit.app/
 The app has the following key functions:
 - _**Single text prediction:**_ copy/paste or type in a text box
 - _**Multiple text prediction:**_ upload a csv file (Note: The column contaning the text to be predicted must be title **"text_inputs"**. The app will generate an output csv file that you can download. This downloadable file will include all the original columns in the uploaded cvs, a column for predicted SDGs, and a columns prediction probability scores.
@@ -35,4 +35,4 @@ The OSDG has online tool for SDG clsssification of text. I will encourage you to
 
 ### To do
 - Add model evaluation metrics
-- Model citation information
+- Citation information
