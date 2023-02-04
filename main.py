@@ -93,7 +93,9 @@ if submitted:
 
     if Text_entry == "":
         st.warning(
-            'Please type or copy and paste text into the above "Text Input" box', icon="⚠️"
+            """This app needs text input to generate predictions. Kindly type or paste text into 
+            the above **"Text Input"** box""",
+            icon="⚠️"
         )
 
     elif Text_entry != "":
