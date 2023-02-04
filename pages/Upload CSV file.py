@@ -128,7 +128,7 @@ if uploaded_file is not None:
 
     st.empty()
 
-    tab1, tab2 = st.tabs(["💹 SDG Histogram", "⏬ Download CVS with predictions"])
+    tab1, tab2 = st.tabs(["💹 SDG Histogram", "⏬ Download CSV file with predictions"])
 
     with tab1:
         st.markdown("##### Prediction outcome")
@@ -164,7 +164,7 @@ if uploaded_file is not None:
         st.header("")
         csv = df_docs.to_csv(index=False)
         b64 = base64.b64encode(csv.encode()).decode()
-        href = f'<a href="data:file/csv;base64, {b64}" download="sdg_predictions.csv">Download CSV with predicted SDGs and scores </a>'
+        href = f'<a href="data:file/csv;base64, {b64}" download="sdg_predictions.csv">Download CSV file with predicted SDGs and scores </a>'
         st.markdown(href, unsafe_allow_html=True)
 
         # st.download_button(
