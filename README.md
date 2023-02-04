@@ -9,7 +9,9 @@ Source:https://www.un.org/development/desa/disabilities/about-us/sustainable-dev
 You can access the streamlit app at: https://sadickam-sdg-classification-bert-main-pypeui.streamlit.app/
 The app has the following key functions:
 - _**Single text prediction:**_ copy/paste or type in a text box
-- _**Multiple text prediction:**_ upload a csv file (Note: The column contaning the text to be predicted must be title **"text_inputs"**. The app will generate an output csv file that you can download. This downloadable file will include all the original columns in the uploaded cvs, a column for predicted SDGs, and a columns prediction probability scores.
+- _**Multiple text prediction:**_ upload a csv file (Note: The column contaning the texts to be predicted must be title **"text_inputs"**. The app will generate an output csv file that you can download. This downloadable file will include all the original columns in the uploaded cvs, a column for predicted SDGs, and a columns prediction probability scores. If any of the text in text_inputs is longer that the maximum model sequence length of approximately 512 words, it will be automatically trancated. For now, if you want to analyse large documents using this model or streamlit app, I will recommend breaking the document into 400 to 500 word chunks, have each chunk in a cell in the **"text_inputs"** column of your cvs file. Hence, you can analyse large document page by page, where the text on each page will be in a csv cell. 
+
+In future updates of this app, support for directly analysing pdf documents may be added for ease of analysing large documents.
 
 ### Use fine tuned BERT Transformer model directly
 If you would like to directly use the fine tuned BERT model, you can easily achieve that unsing the code below: 
