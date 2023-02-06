@@ -104,7 +104,7 @@ if submitted:
         joined_clean_sents = prep_text(Text_entry)
 
         # tokenize pre-processed text
-        tokenizer = load_tokenizer()
+        tokenizer = load_tokenizer(tuncation=True)
         tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
         # predict pre-processed

@@ -100,7 +100,7 @@ if uploaded_file is not None:
         joined_clean_sents = prep_text(text_input)
 
         # tokenize pre-processed text
-        tokenizer = load_tokenizer()
+        tokenizer = load_tokenizer(truncation=True)
         tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
 
         # predict pre-processed
