@@ -40,7 +40,8 @@ def load_model():
 # Load and cache tokenizer
 @st.cache(allow_output_mutation=True)
 def load_tokenizer():
-    return AutoTokenizer.from_pretrained(checkpoint)
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    return tokenizer(truncation=True, return_tensors="pt")
 
 
 # Configure app page
@@ -104,8 +105,8 @@ if submitted:
         joined_clean_sents = prep_text(Text_entry)
 
         # tokenize pre-processed text
-        tokenizer = load_tokenizer(tuncation=True)
-        tokenized_text = tokenizer(joined_clean_sents, return_tensors="pt")
+        tokenized_text = joined_clean_sents.map(load_tokenizer)
+        #tokenized_text = tokenizer_data(joined_clean_sents)
 
         # predict pre-processed
         model = load_model()
