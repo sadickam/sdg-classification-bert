@@ -50,7 +50,7 @@ def load_model():
 @st.cache(allow_output_mutation=True)
 def load_tokenizer():
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    return tokenizer(truncation=True, return_tensors="pt")
+    return tokenizer
 
 
 # Configure app page
@@ -101,8 +101,8 @@ if uploaded_file is not None:
         joined_clean_sents = prep_text(text_input)
 
         # tokenize pre-processed text
-        tokenized_text = joined_clean_sents.map(load_tokenizer)
-        # tokenized_text = tokenizer_data(joined_clean_sents)
+        tokenizer_ = load_tokenizer()
+        tokenized_text = tokenizer_(joined_clean_sents, return_tensors="pt", truncation=True, max_length=512)
 
         # predict pre-processed
         model = load_model()
