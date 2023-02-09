@@ -9,7 +9,7 @@ Source:https://www.un.org/development/desa/disabilities/about-us/sustainable-dev
 The app can be accessed from two sources including: 
 - Streamlit at: https://sadickam-sdg-classification-bert-main-qxg1gv.streamlit.app/ (This option runs faster but is less stable)
 
-- Hugging Face at: https://huggingface.co/spaces/sadickam/SDG-Classifier (This option for now is a bit slow but more stable) 
+- Hugging Face at: https://sadickam-sdg-text-classifier.hf.space (This option for now is a bit slow but more stable) 
 
 The app has the following key functions:
 - _**Single text prediction:**_ copy/paste or type in a text box
