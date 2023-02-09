@@ -6,7 +6,7 @@ The streamlit app supports **SDG 1 to SDG 16** shown in the image below
 Source:https://www.un.org/development/desa/disabilities/about-us/sustainable-development-goals-sdgs-and-disability.html
 
 ### Streamlit app link and key functions
-you can access the app from two sources including: 
+The app can be accessed from two sources including: 
 - Streamlit at: https://sadickam-sdg-classification-bert-main-qxg1gv.streamlit.app/ (This option runs faster but is less stable)
 
 - Hugging Face at: https://huggingface.co/spaces/sadickam/SDG-Classifier (This option for now is a bit slow but more stable) 
