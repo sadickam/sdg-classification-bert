@@ -11,7 +11,6 @@ The app can be accessed from two sources including:
 
 - Hugging Face at: https://sadickam-sdg-text-classifier.hf.space (This option for now is a bit slow but more stable) 
 
-https://huggingface.co/spaces/sadickam/SDG-Text-Classifier
 
 The app has the following key functions:
 - _**Single text prediction:**_ copy/paste or type in a text box
