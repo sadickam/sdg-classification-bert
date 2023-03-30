@@ -11,6 +11,8 @@ The app can be accessed from two sources including:
 
 - Hugging Face at: https://sadickam-sdg-text-classifier.hf.space (This option for now is a bit slow but more stable) 
 
+https://huggingface.co/spaces/sadickam/SDG-Text-Classifier
+
 The app has the following key functions:
 - _**Single text prediction:**_ copy/paste or type in a text box
 - _**Multiple text prediction:**_ upload a csv file (Note: The column contaning the texts to be predicted must be title **"text_inputs"**. The app will generate an output csv file that you can download. This downloadable file will include all the original columns in the uploaded cvs, a column for predicted SDGs, and a columns prediction probability scores. If any of the text in text_inputs is longer that the maximum model sequence length of approximately 300 - 400 words (i.e. 512 word pieces), it will be automatically trancated. For now, if you want to analyse large documents using this model or streamlit app, I will recommend breaking the document into 300 to 400 word chunks, have each chunk in a cell in the **"text_inputs"** column of your cvs file. Hence, you can analyse large document page by page, where the text on each page will be in a csv cell. 
