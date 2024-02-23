@@ -1,5 +1,5 @@
-# sdg-classification-bert (Streamlit App)
-This repository powers a Streamlit app for classifying text with respect the United Nations Sustainable Development Goals (SDG). The classification model is a fine-tuned BERT. The labelled data used in fine-tuning the BERT model was obtained fron the OSDG Community Dataset publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset include text from diverse fields; hence, the fine tuned BERT model and the streamlit app are generic and can be used to predict the SDG of most texts.  
+# sdg-classification-bert (Streamlit/Gradio App)
+This repository powers a Streamlit app for classifying text with respect the United Nations Sustainable Development Goals (SDG). The classification model is a fine-tuned BERT and named _**sdgBERT**_. The labelled data used in fine-tuning sdgBERT model was obtained fron the OSDG Community Dataset publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset include text from diverse fields; hence, the fine tuned BERT model and the streamlit app are generic and can be used to predict the SDG of most texts.  
 
 The streamlit app supports **SDG 1 to SDG 16** shown in the image below
 ![image](https://user-images.githubusercontent.com/73560591/216751462-ced482ba-5d8e-48aa-9a48-5557979a35f1.png)
@@ -7,9 +7,9 @@ Source:https://www.un.org/development/desa/disabilities/about-us/sustainable-dev
 
 ### Streamlit app link and key functions
 The app can be accessed from two sources including: 
-- Streamlit at: https://sadickam-sdg-classification-bert-main-qxg1gv.streamlit.app/ (This option runs faster but is less stable)
+- Streamlit App: https://sadickam-sdg-classification-bert-main-qxg1gv.streamlit.app/
 
-- Hugging Face at: https://sadickam-sdg-text-classifier.hf.space (This option for now is a bit slow but more stable) 
+- Gradio App (Hugging Face SPace): https://sadickam-sdg-text-classifier-app.hf.space 
 
 
 The app has the following key functions:
