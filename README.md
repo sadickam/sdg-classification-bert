@@ -20,9 +20,9 @@ If you would like to directly use the fine tuned BERT model, you can easily achi
 ```python
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-tokenizer = AutoTokenizer.from_pretrained("sadickam/sdg-classification-bert")
+tokenizer = AutoTokenizer.from_pretrained("sadickam/sdgBERT")
 
-model = AutoModelForSequenceClassification.from_pretrained("sadickam/sdg-classification-bert")
+model = AutoModelForSequenceClassification.from_pretrained("sadickam/sdgBERT")
 ```
 Or just clone the model repo from Hugging Face using the code below:
 ```
