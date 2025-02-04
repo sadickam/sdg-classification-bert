@@ -15,7 +15,7 @@ Key functions of App 1:
 
 ### App 2: Document SDG App
 This app can be accessed from: 
-(Hugging Face Space): https://sadickam-document-sdg-app-cpu.hf.space 
+- (Hugging Face Space): https://sadickam-document-sdg-app-cpu.hf.space 
 
 This app allows users to analyze PDF documents to check their alignment with the United Nations Sustainable Development Goals (SDGs). When a PDF is uploaded a PDF, the app processes the text to identify and classify content corresponding to the first 16 UN SDGs. The analysis can be conducted at the **page-level** or **sentence-level**, and users can specify the range of PDF document pages to be analyzed. This page specification function can be used to exclude tables of contents, references, appendices, etc.   
 
