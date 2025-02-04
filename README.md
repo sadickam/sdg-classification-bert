@@ -1,5 +1,7 @@
 # sdg-classification-bert (sdgBERT App)
-This repository relates to two web applications powered by a fine-tuned BERT, _**sdgBERT**_, for classifying text concerning the United Nations Sustainable Development Goals (SDG). The manually labeled data used in fine-tuning sdgBERT was obtained from the OSDG Community Dataset, which is publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset includes text from diverse fields; hence, the sdgBERT model and the web apps are generic and can be used to predict the SDG of most texts. Note that sdgBERT predicts SDG1 to SDG16 only, excluding SDG17 and the "Other" category for non-SDG text.  
+This repository relates to two web applications powered by a fine-tuned BERT, _**sdgBERT**_, for classifying text concerning the United Nations Sustainable Development Goals (SDG). The manually labeled data used in fine-tuning sdgBERT was obtained from the OSDG Community Dataset, publicly available at https://zenodo.org/record/5550238#.Y93vry9ByF4. The OSDG dataset includes text from diverse fields; hence, the sdgBERT model and the web apps are generic and can be used to predict the SDG of most texts. Note that sdgBERT predicts SDG1 to SDG16 only, excluding SDG17 and the "Other" category for non-SDG text. 
+
+**sdgBERT Repository:** You can access the sdgBERT model repository at: https://huggingface.co/sadickam/sdgBERT
 
 The two apps supports **SDG 1 to SDG 16** shown in the image below
 ![image](https://user-images.githubusercontent.com/73560591/216751462-ced482ba-5d8e-48aa-9a48-5557979a35f1.png)
